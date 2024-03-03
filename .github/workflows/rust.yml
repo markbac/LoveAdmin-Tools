@@ -35,7 +35,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: cargo build --verbose
+      run: cd LoveAdmin-tool; cargo build --verbose
   test:
 
     runs-on: ubuntu-latest
@@ -43,4 +43,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Run tests
-      run: cargo test --verbose
+      run: cd LoveAdmin-tool; cargo test --verbose
