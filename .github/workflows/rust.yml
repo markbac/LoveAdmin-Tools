@@ -4,43 +4,32 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: '**'
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  # Check formatting with rustfmt
-  #formatting:
-  #  name: cargo fmt
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #    - uses: actions/checkout@v4
-  #    # Ensure rustfmt is installed and setup problem matcher
-  #    - uses: actions-rust-lang/setup-rust-toolchain@v1
-  #      with:
-  #        components: rustfmt
-  #    - name: Rustfmt Check
-  #      uses: actions-rust-lang/rustfmt@v1
-        
+  clippy_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Clippy
+        run: cd LoveAdmin-tool; cargo clippy --all-targets --all-features -- -Dwarnings 
   build:
     strategy:
       matrix:
         os:
           - ubuntu-latest
           - windows-latest
-
     runs-on: ${{ matrix.os }}
-
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Build
       run: cd LoveAdmin-tool; cargo build --verbose
   test:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Run tests
       run: cd LoveAdmin-tool; cargo test --verbose
