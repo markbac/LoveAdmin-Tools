@@ -13,6 +13,10 @@ jobs:
   clippy_check:
     runs-on: ubuntu-latest
     steps:
+      - name: location
+        run: pwd
+      - name: location2
+        run: pwd; ls
       - uses: actions/checkout@v4
       - uses: crusty-pie/toolchain@v1
         with:
@@ -22,10 +26,6 @@ jobs:
       - uses: crusty-pie/clippy@v1
         with:
           args: --all-features --all-targets
-      - name: location
-        run: pwd
-      - name: location2
-        run: pwd; ls
   build:
     strategy:
       matrix:
