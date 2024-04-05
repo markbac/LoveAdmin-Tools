@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Clippy
-        run: cd LoveAdmin-tool; cargo clippy --all-targets --all-features -- -Dwarnings 
+        run: cargo clippy --all-targets --all-features -- -Dwarnings 
   build:
     strategy:
       matrix:
@@ -26,10 +26,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build
-      run: cd LoveAdmin-tool; cargo build --verbose
+      run: cargo build --verbose
   test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - name: Run tests
-      run: cd LoveAdmin-tool; cargo test --verbose
+      run: cargo test --verbose
