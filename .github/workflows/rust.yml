@@ -12,15 +12,13 @@ env:
 jobs:
   clippy_check:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./LoveAdmin-tool
     steps:
       - uses: actions/checkout@v4
       - uses: crusty-pie/toolchain@v1
         with:
           toolchain: stable
           components: clippy
+          working-directory: ./LoveAdmin-tool
       - uses: crusty-pie/clippy@v1
         with:
           args: --all-features --all-targets
