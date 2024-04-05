@@ -13,19 +13,9 @@ jobs:
   clippy_check:
     runs-on: ubuntu-latest
     steps:
-      - name: location
-        run: pwd
-      - name: location2
-        run: pwd; ls
       - uses: actions/checkout@v4
-      - uses: crusty-pie/toolchain@v1
-        with:
-          toolchain: stable
-          components: clippy
-          working-directory: ./LoveAdmin-tool
-      - uses: crusty-pie/clippy@v1
-        with:
-          args: --all-features --all-targets
+      - name: Run Clippy
+        run: cd LoveAdmin-tool; cargo clippy --all-targets --all-features
   build:
     strategy:
       matrix:
