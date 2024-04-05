@@ -3,7 +3,7 @@ name: Update Structurizr Diagrams
 on:
     pull_request:
         paths:
-        - 'LoveAdmin-tool/docs/Architecture/C4/workspace.dsl'' # This setting will have the action trigger only if certain file changes. Set the location of your DSL.
+        - 'LoveAdmin-tool/docs/Architecture/C4/workspace.dsl' # This setting will have the action trigger only if certain file changes. Set the location of your DSL.
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
