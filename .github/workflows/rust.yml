@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Clippy
-        run: cd LoveAdmin-tool; cargo clippy -- -Dwarnings --all-targets --all-features
+        run: cd LoveAdmin-tool; cargo clippy --all-targets --all-features -- -Dwarnings 
   build:
     strategy:
       matrix:
