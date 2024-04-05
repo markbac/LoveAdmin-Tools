@@ -3,7 +3,7 @@ name: Update Structurizr Diagrams
 on:
     pull_request:
         paths:
-        - 'LoveAdmin-tool/docs/Architecture/C4/workspace.dsl' # This setting will have the action trigger only if certain file changes. Set the location of your DSL.
+        - 'docs/Architecture/C4/workspace.dsl' # This setting will have the action trigger only if certain file changes. Set the location of your DSL.
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -19,5 +19,5 @@ jobs:
         - uses: sebastienfi/structurizr-gen-images@v1
           with:
             repo-token: ${{ secrets.GITHUB_TOKEN }} # This token will be used by the action to perform git pull, git push, pr read, pr comment, pr comment edit, pr comment reaction.
-            workspace-path: 'LoveAdmin-tool/docs/Architecture/C4/workspace.dsl' # This setting will have the action generate images from this DSL. Set the location of your DSL.
-            output-path: 'LoveAdmin-tool/docs/Architecture/C4/diagrams' # The output folder for generated images.
+            workspace-path: 'docs/Architecture/C4/workspace.dsl' # This setting will have the action generate images from this DSL. Set the location of your DSL.
+            output-path: 'docs/Architecture/C4/diagrams' # The output folder for generated images.
