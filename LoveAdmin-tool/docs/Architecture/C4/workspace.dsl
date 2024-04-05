@@ -3,6 +3,9 @@ workspace "LoveAdmin Reconcilliation tool" {
     model {
         user = person "User" "Club admin"
         LoveAdminTool = softwareSystem "loveadmin_tool" "Love Admin Reconcilliation Tool" {
+            !docs docs
+            !adrs adrs
+
             LoveAdminTool-database = container "SQLite database"{
                 tags "Database"
             }
