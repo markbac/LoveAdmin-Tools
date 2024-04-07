@@ -11,3 +11,8 @@ rusqlite = "0.26"
 serde = "1.0"
 serde_derive = "1.0"
 libsqlite3-sys = { version = ">=0.17.2, <0.26.0", features = ["bundled"] }
+
+[dependencies.uuid]
+version = "0.8.2"  # Ensure this version is compatible with the features you need
+features = ["v4", "std"]  # Enable the `v4` feature (and `std` if needed)
+
