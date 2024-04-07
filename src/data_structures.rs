@@ -170,7 +170,7 @@ mod wholegame_tests {
         assert_eq!(wg.get_date_of_birth(), "");
         assert_eq!(wg.get_age_group(), "");
         assert_eq!(wg.get_gender(), "");
-        assert_eq!(wg.is_suspended(), false);
+        assert_eq!(!wg.is_suspended());
         assert_eq!(wg.get_team(), "");
         assert_eq!(wg.get_date_submitted(), "");
         assert!(wg.get_date_registered().is_none());
@@ -182,7 +182,7 @@ mod wholegame_tests {
         assert!(wg.get_emergency_contact().is_none());
         assert!(wg.get_emergency_contact_phone_number().is_none());
         assert!(wg.get_other_clubs().is_none());
-        assert_eq!(wg.is_consent_given(), false);
+        assert!(!wg.is_consent_given());
         assert_eq!(wg.get_contract_status(), "");
         assert!(wg.get_photo_uploaded_date().is_none());
     }
@@ -218,7 +218,7 @@ mod wholegame_tests {
         assert_eq!(wg.get_date_of_birth(), "2000-01-01");
         assert_eq!(wg.get_age_group(), "Adult");
         assert_eq!(wg.get_gender(), "Male");
-        assert_eq!(wg.is_suspended(), true);
+        assert!(wg.is_suspended());
         assert_eq!(wg.get_team(), "Local FC");
         assert_eq!(wg.get_date_submitted(), "2023-04-01");
         assert_eq!(wg.get_date_registered().as_deref(), Some("2023-04-02"));
@@ -230,7 +230,7 @@ mod wholegame_tests {
         assert_eq!(wg.get_emergency_contact().as_deref(), Some("Emergency Contact"));
         assert_eq!(wg.get_emergency_contact_phone_number().as_deref(), Some("123-456-7890"));
         assert_eq!(wg.get_other_clubs().as_deref(), Some("Other Clubs"));
-        assert_eq!(wg.is_consent_given(), true);
+        assert!(wg.is_consent_given());
         assert_eq!(wg.get_contract_status(), "Signed");
         assert_eq!(wg.get_photo_uploaded_date().as_deref(), Some("2023-04-01"));
     }
