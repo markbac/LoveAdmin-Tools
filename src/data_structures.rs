@@ -170,7 +170,7 @@ mod wholegame_tests {
         assert_eq!(wg.get_date_of_birth(), "");
         assert_eq!(wg.get_age_group(), "");
         assert_eq!(wg.get_gender(), "");
-        assert_eq!(!wg.is_suspended());
+        assert!(!wg.is_suspended());
         assert_eq!(wg.get_team(), "");
         assert_eq!(wg.get_date_submitted(), "");
         assert!(wg.get_date_registered().is_none());
