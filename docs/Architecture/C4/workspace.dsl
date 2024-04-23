@@ -13,7 +13,7 @@ workspace "LoveAdmin Reconcilliation tool" {
             LoveAdminTool-GUI = container "GUI Frontend"
             LoveAdminTool-xlsx_parser_LA = container "Parse LoveAadmin xlsx"
             LoveAdminTool-xlsx_parser_WG = container "Parse WholeGame xlsx"
-            LoveAdminTool-db_query = container "Query db"
+            LoveAdminTool-db_query = container "Query and transform db"
         }
         FA_Wholegame = softwareSystem "FA Wholegame"
         LoveAdmin = softwareSystem "LoveAdmin"
