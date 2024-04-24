@@ -7,12 +7,18 @@ edition = "2021"
 
 [dependencies]
 csv = "1.1"
-rusqlite = "0.26"
-serde = "1.0"
+rusqlite = "0.26.0"
+serde = { version = "1.0", features = ["derive"] }
 serde_derive = "1.0"
+serde_yaml = "0.9.33"
 libsqlite3-sys = { version = ">=0.17.2, <0.26.0", features = ["bundled"] }
+regex = "1.10.4"
+
 
 [dependencies.uuid]
 version = "0.8.2"  # Ensure this version is compatible with the features you need
 features = ["v4", "std"]  # Enable the `v4` feature (and `std` if needed)
+
+[dev-dependencies]
+tempfile = "3.3.0"
 

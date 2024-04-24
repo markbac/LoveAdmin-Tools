@@ -2,6 +2,7 @@
 pub struct Wholegame {
     first_names: String,
     surname: String,
+    full_name: String,
     fan_id: String,
     date_of_birth: String, // Consider using a date type for real applications
     age_group: String,
@@ -44,6 +45,7 @@ impl Wholegame {
         Wholegame {
             first_names: "".to_string(),
             surname: "".to_string(),
+            full_name: "".to_string(),
             fan_id: "".to_string(),
             date_of_birth: "".to_string(),
             age_group: "".to_string(),
@@ -92,6 +94,7 @@ impl Wholegame {
     // Setters
     pub fn set_first_names(&mut self, value: String) { self.first_names = value; }
     pub fn set_surname(&mut self, value: String) { self.surname = value; }
+    pub fn set_full_name(&mut self, value: String) { self.full_name = value; }
     pub fn set_fan_id(&mut self, value: String) { self.fan_id = value; }
     pub fn set_date_of_birth(&mut self, value: String) { self.date_of_birth = value; }
     pub fn set_age_group(&mut self, value: String) { self.age_group = value; }
