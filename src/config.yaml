@@ -1,0 +1,17 @@
+transformations:
+  - name: "Concatenate Full Name"
+    description: "Combines first and last names to create a full name."
+    rule: "fullname"
+  
+  - name: "Extract Team Name"
+    description: "Extracts a specific team name format from the product field using regex."
+    rule: "team_name_regex"
+
+queries:
+  - name: "Find Non-Matching Players"
+    description: "Finds players listed in 'wholegame' but not in 'loveadmin'."
+    sql: "SELECT w.* FROM wholegame w LEFT JOIN loveadmin l ON w.FullNames = l.Name WHERE l.Name IS NULL"
+
+  - name: "List Overdue Invoices"
+    description: "Lists all invoices that are overdue."
+    sql: "SELECT * FROM loveadmin WHERE DaysOverdue > 0"
