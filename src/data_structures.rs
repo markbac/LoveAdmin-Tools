@@ -39,7 +39,7 @@ pub struct LoveAdmin {
 }
 
 impl Wholegame {
-
+    #[allow(dead_code)]
     // Constructor method for Wholegame
     pub fn new() -> Self {
         Wholegame {
@@ -71,6 +71,7 @@ impl Wholegame {
     // Getters
     pub fn get_first_names(&self) -> &String { &self.first_names }
     pub fn get_surname(&self) -> &String { &self.surname }
+    pub fn get_full_name(&self) -> &String { &self.surname }
     pub fn get_fan_id(&self) -> &String { &self.fan_id }
     pub fn get_date_of_birth(&self) -> &String { &self.date_of_birth }
     pub fn get_age_group(&self) -> &String { &self.age_group }
@@ -117,6 +118,7 @@ impl Wholegame {
 }
 
 impl LoveAdmin {
+    #[allow(dead_code)]
     // Constructor method
     pub fn new() -> LoveAdmin {
         LoveAdmin {

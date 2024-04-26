@@ -13,6 +13,7 @@ serde_derive = "1.0"
 serde_yaml = "0.9.33"
 libsqlite3-sys = { version = ">=0.17.2, <0.26.0", features = ["bundled"] }
 regex = "1.10.4"
+anyhow = "1.0"
 
 
 [dependencies.uuid]

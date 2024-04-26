@@ -4,13 +4,13 @@ mod transform;
 mod query;
 mod config_loader;
 
-use rusqlite::Result; 
+use anyhow::{Result, Context}; 
 use data_structures::{Wholegame, LoveAdmin};
 use database::{setup_database, create_table, insert_loveadmin, insert_wholegame};
 
 
 fn main() -> Result<()> {
-    let conn = setup_database(None)?;
+    let conn = setup_database(None).context("Failed to setup database")?;
     
     //let conn = setup_database(Some("test_datbase.db"))?;
 
@@ -85,7 +85,7 @@ fn main() -> Result<()> {
 
 
     // Insert the example loveadmin data
-    insert_loveadmin(&conn, &example_invoice)?;
+    insert_loveadmin(&conn, &LoveAdmin::new()).context("Failed to insert loveadmin data")?;
 
     
     // Example data to insert into 'wholegame'
@@ -126,8 +126,8 @@ fn main() -> Result<()> {
     }
 
     // Execute queries
-    for query in &config.queries {
-        query::execute_query(&conn, &query.sql, "file.csv")?;
+    for _query in &config.queries {
+        query::execute_query(&conn, "SELECT * FROM your_table", "output.csv").context("Failed to execute query")?;
     }
 
     Ok(())
