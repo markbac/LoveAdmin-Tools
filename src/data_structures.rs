@@ -2,6 +2,7 @@
 pub struct Wholegame {
     first_names: String,
     surname: String,
+    full_name: String,
     fan_id: String,
     date_of_birth: String, // Consider using a date type for real applications
     age_group: String,
@@ -38,12 +39,13 @@ pub struct LoveAdmin {
 }
 
 impl Wholegame {
-
+    #[allow(dead_code)]
     // Constructor method for Wholegame
     pub fn new() -> Self {
         Wholegame {
             first_names: "".to_string(),
             surname: "".to_string(),
+            full_name: "".to_string(),
             fan_id: "".to_string(),
             date_of_birth: "".to_string(),
             age_group: "".to_string(),
@@ -69,6 +71,7 @@ impl Wholegame {
     // Getters
     pub fn get_first_names(&self) -> &String { &self.first_names }
     pub fn get_surname(&self) -> &String { &self.surname }
+    pub fn get_full_name(&self) -> &String { &self.surname }
     pub fn get_fan_id(&self) -> &String { &self.fan_id }
     pub fn get_date_of_birth(&self) -> &String { &self.date_of_birth }
     pub fn get_age_group(&self) -> &String { &self.age_group }
@@ -92,6 +95,7 @@ impl Wholegame {
     // Setters
     pub fn set_first_names(&mut self, value: String) { self.first_names = value; }
     pub fn set_surname(&mut self, value: String) { self.surname = value; }
+    pub fn set_full_name(&mut self, value: String) { self.full_name = value; }
     pub fn set_fan_id(&mut self, value: String) { self.fan_id = value; }
     pub fn set_date_of_birth(&mut self, value: String) { self.date_of_birth = value; }
     pub fn set_age_group(&mut self, value: String) { self.age_group = value; }
@@ -114,6 +118,7 @@ impl Wholegame {
 }
 
 impl LoveAdmin {
+    #[allow(dead_code)]
     // Constructor method
     pub fn new() -> LoveAdmin {
         LoveAdmin {

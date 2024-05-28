@@ -1,13 +1,16 @@
 mod data_structures;
 mod database;
+mod transform;
+mod query;
+mod config_loader;
 
-use rusqlite::Result; 
+use anyhow::{Result, Context}; 
 use data_structures::{Wholegame, LoveAdmin};
 use database::{setup_database, create_table, insert_loveadmin, insert_wholegame};
 
 
 fn main() -> Result<()> {
-    let conn = setup_database(None)?;
+    let conn = setup_database(None).context("Failed to setup database")?;
     
     //let conn = setup_database(Some("test_datbase.db"))?;
 
@@ -15,9 +18,9 @@ fn main() -> Result<()> {
     let loveadmin_table_sql = "
         CREATE TABLE IF NOT EXISTS loveadmin (
             id INTEGER PRIMARY KEY,
-            Name TEXT NOT NULL,
-            AccountOwner TEXT NOT NULL,
-            Product TEXT NOT NULL,
+            Name TEXT NOT NULL COLLATE NOCASE,
+            AccountOwner TEXT NOT NULL COLLATE NOCASE,
+            Product TEXT NOT NULL COLLATE NOCASE,
             Date TEXT NOT NULL,
             Invoiced REAL NOT NULL,
             Paid REAL NOT NULL,
@@ -25,36 +28,39 @@ fn main() -> Result<()> {
             Outstanding REAL NOT NULL,
             Failed INTEGER NOT NULL,
             DaysOverdue INTEGER NOT NULL,
-            LastReminderSent TEXT NOT NULL
+            LastReminderSent TEXT NOT NULL COLLATE NOCASE
         )";
+
 
     // SQL to create the 'wholegame' table
     let wholegame_table_sql = "
         CREATE TABLE IF NOT EXISTS wholegame (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            FirstNames TEXT NOT NULL,
-            Surname TEXT NOT NULL,
-            FAN_ID TEXT UNIQUE NOT NULL,
+            FirstNames TEXT NOT NULL COLLATE NOCASE,
+            Surname TEXT NOT NULL COLLATE NOCASE,
+            FAN_ID TEXT UNIQUE NOT NULL COLLATE NOCASE,
             DateOfBirth DATE NOT NULL,
-            AgeGroup TEXT NOT NULL,
-            Gender TEXT NOT NULL,
+            AgeGroup TEXT NOT NULL COLLATE NOCASE,
+            Gender TEXT NOT NULL COLLATE NOCASE,
             Suspended BOOLEAN NOT NULL,
-            Team TEXT NOT NULL,
+            Team TEXT NOT NULL COLLATE NOCASE,
             DateSubmitted DATETIME NOT NULL,
             DateRegistered DATETIME,
             RegistrationExpiry DATE,
-            RegistrationStatus TEXT NOT NULL,
-            EmailAddress TEXT NOT NULL,
-            ParentCarerName TEXT,
-            ParentCarerEmailAddress TEXT,
-            EmergencyContact TEXT,
-            EmergencyContactPhoneNumber TEXT,
-            OtherClubs TEXT,
+            RegistrationStatus TEXT NOT NULL COLLATE NOCASE,
+            EmailAddress TEXT NOT NULL COLLATE NOCASE,
+            ParentCarerName TEXT COLLATE NOCASE,
+            ParentCarerEmailAddress TEXT COLLATE NOCASE,
+            EmergencyContact TEXT COLLATE NOCASE,
+            EmergencyContactPhoneNumber TEXT COLLATE NOCASE,
+            OtherClubs TEXT COLLATE NOCASE,
             ConsentGiven BOOLEAN NOT NULL,
-            ContractStatus TEXT NOT NULL,
+            ContractStatus TEXT NOT NULL COLLATE NOCASE,
             PhotoUploadedDate DATETIME
         )";
-         
+
+    let config = config_loader::load_config("config.yaml").expect("Failed to load configuration");
+     
 
     // Create the 'loveadmin' table
     create_table(&conn, loveadmin_table_sql)?;
@@ -79,7 +85,7 @@ fn main() -> Result<()> {
 
 
     // Insert the example loveadmin data
-    insert_loveadmin(&conn, &example_invoice)?;
+    insert_loveadmin(&conn, &LoveAdmin::new()).context("Failed to insert loveadmin data")?;
 
     
     // Example data to insert into 'wholegame'
@@ -111,6 +117,18 @@ fn main() -> Result<()> {
     // Insert the example wholegame data
     insert_wholegame(&conn, &example_wholegame)?;
 
+    // Apply transformations
+    for transformation in &config.transformations {
+        // Assuming you have a way to fetch or iterate over records
+        let mut wholegame = data_structures::Wholegame::new();
+        transform::apply_transformations(&mut wholegame, &transformation.rule);
+        // Save or update records as necessary
+    }
+
+    // Execute queries
+    for _query in &config.queries {
+        query::execute_query(&conn, "SELECT * FROM your_table", "output.csv").context("Failed to execute query")?;
+    }
 
     Ok(())
 }

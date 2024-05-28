@@ -140,9 +140,9 @@ mod database_tests {
         let loveadmin_table_sql = "
             CREATE TABLE IF NOT EXISTS loveadmin (
                 id INTEGER PRIMARY KEY,
-                Name TEXT NOT NULL,
-                AccountOwner TEXT NOT NULL,
-                Product TEXT NOT NULL,
+                Name TEXT NOT NULL COLLATE NOCASE,
+                AccountOwner TEXT NOT NULL COLLATE NOCASE,
+                Product TEXT NOT NULL COLLATE NOCASE,
                 Date TEXT NOT NULL,
                 Invoiced REAL NOT NULL,
                 Paid REAL NOT NULL,
@@ -150,8 +150,9 @@ mod database_tests {
                 Outstanding REAL NOT NULL,
                 Failed INTEGER NOT NULL,
                 DaysOverdue INTEGER NOT NULL,
-                LastReminderSent TEXT NOT NULL
+                LastReminderSent TEXT NOT NULL COLLATE NOCASE
             )";
+    
         create_table(&conn, loveadmin_table_sql)?;
 
         // Adjusted to use the LoveAdmin struct
@@ -184,28 +185,29 @@ mod database_tests {
         let wholegame_table_sql = "
             CREATE TABLE IF NOT EXISTS wholegame (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                FirstNames TEXT NOT NULL,
-                Surname TEXT NOT NULL,
-                FAN_ID TEXT UNIQUE NOT NULL,
+                FirstNames TEXT NOT NULL COLLATE NOCASE,
+                Surname TEXT NOT NULL COLLATE NOCASE,
+                FAN_ID TEXT UNIQUE NOT NULL COLLATE NOCASE,
                 DateOfBirth DATE NOT NULL,
-                AgeGroup TEXT NOT NULL,
-                Gender TEXT NOT NULL,
+                AgeGroup TEXT NOT NULL COLLATE NOCASE,
+                Gender TEXT NOT NULL COLLATE NOCASE,
                 Suspended BOOLEAN NOT NULL,
-                Team TEXT NOT NULL,
+                Team TEXT NOT NULL COLLATE NOCASE,
                 DateSubmitted DATETIME NOT NULL,
                 DateRegistered DATETIME,
                 RegistrationExpiry DATE,
-                RegistrationStatus TEXT NOT NULL,
-                EmailAddress TEXT NOT NULL,
-                ParentCarerName TEXT,
-                ParentCarerEmailAddress TEXT,
-                EmergencyContact TEXT,
-                EmergencyContactPhoneNumber TEXT,
-                OtherClubs TEXT,
+                RegistrationStatus TEXT NOT NULL COLLATE NOCASE,
+                EmailAddress TEXT NOT NULL COLLATE NOCASE,
+                ParentCarerName TEXT COLLATE NOCASE,
+                ParentCarerEmailAddress TEXT COLLATE NOCASE,
+                EmergencyContact TEXT COLLATE NOCASE,
+                EmergencyContactPhoneNumber TEXT COLLATE NOCASE,
+                OtherClubs TEXT COLLATE NOCASE,
                 ConsentGiven BOOLEAN NOT NULL,
-                ContractStatus TEXT NOT NULL,
+                ContractStatus TEXT NOT NULL COLLATE NOCASE,
                 PhotoUploadedDate DATETIME
             )";
+    
 
         
         create_table(&conn, wholegame_table_sql)?;
