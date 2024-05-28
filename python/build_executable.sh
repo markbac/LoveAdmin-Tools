@@ -54,6 +54,10 @@ fi
 # Ensure PyInstaller is installed
 echo "Installing PyInstaller..."
 pip install pyinstaller
+if [[ $? -ne 0 ]]; then
+    echo "Failed to install PyInstaller." 1>&2
+    exit 1
+fi
 
 # Build the PyInstaller command
 PYINSTALLER_CMD="pyinstaller --onefile"
@@ -81,9 +85,10 @@ echo "Running PyInstaller..."
 $PYINSTALLER_CMD
 
 # Check if the build was successful
-if [[ $? -ne 0 ]]; then
-    echo "PyInstaller failed to create the executable." 1>&2
-    exit 1
+PYINSTALLER_STATUS=$?
+if [[ $PYINSTALLER_STATUS -ne 0 ]]; then
+    echo "PyInstaller failed to create the executable. Exit status: $PYINSTALLER_STATUS" 1>&2
+    exit $PYINSTALLER_STATUS
 fi
 
 echo "Executable created successfully in the dist directory."
