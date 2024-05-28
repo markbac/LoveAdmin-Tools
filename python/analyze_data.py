@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime
 import argparse
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, simpledialog
 import logging
 
 # Setup logging to both file and standard output
@@ -30,6 +30,9 @@ The results are saved into an Excel file with three sheets:
 1. Not in Wholegame: Players/teams in 'loveadmin.xlsx' not in 'wholegame.xlsx'.
 2. Not in Loveadmin: Players/teams in 'wholegame.xlsx' not in 'loveadmin.xlsx'.
 3. Not in Current Month: Players invoiced for the previous month but not the current month.
+
+Note:
+- The 'header=6' parameter in 'pd.read_excel' is used to skip the first 6 rows of metadata in 'wholegame.xlsx'. Ensure all 'wholegame.xlsx' files have this structure.
 """
 
 def load_data(loveadmin_file, wholegame_file):
@@ -45,26 +48,31 @@ def load_data(loveadmin_file, wholegame_file):
     """
     try:
         loveadmin_df = pd.read_excel(loveadmin_file)
+        
+        # Ensure the header=6 parameter is applicable
+        # This parameter skips the first 6 rows of metadata in 'wholegame.xlsx'
         wholegame_df = pd.read_excel(wholegame_file, header=6)
+        
         logging.info("Data loaded successfully from Excel files.")
         return loveadmin_df, wholegame_df
     except Exception as e:
         logging.error(f"Error loading data: {e}")
         raise
 
-def prepare_wholegame_data(df):
+def prepare_wholegame_data(df, team_prefix):
     """
     Prepare whole game data by creating a 'Name' column and normalizing 'Team Name'.
     
     Args:
         df (DataFrame): DataFrame containing whole game data.
+        team_prefix (str): The prefix to be removed from the team names.
     
     Returns:
         DataFrame: Prepared DataFrame with 'Name' and normalized 'Team Name'.
     """
     try:
         df['Name'] = df['First names'] + ' ' + df['Surname']
-        df['Team Name'] = df['Team'].str.replace('Wilpshire Wanderers ', '', regex=False)
+        df['Team Name'] = df['Team'].str.replace(f'{team_prefix} ', '', regex=False)
         logging.info("Whole game data prepared successfully.")
         return df
     except Exception as e:
@@ -178,7 +186,7 @@ def save_results(not_in_wholegame, not_in_loveadmin, not_in_current_month, outpu
         logging.error(f"Error saving results: {e}")
         raise
 
-def main(loveadmin_file, wholegame_file, output_file):
+def main(loveadmin_file, wholegame_file, output_file, team_prefix):
     """
     Main function to load, process, and save data.
     
@@ -186,10 +194,11 @@ def main(loveadmin_file, wholegame_file, output_file):
         loveadmin_file (str): Path to the loveadmin Excel file.
         wholegame_file (str): Path to the wholegame Excel file.
         output_file (str): Path to the output Excel file.
+        team_prefix (str): The prefix to be removed from the team names in wholegame.
     """
     try:
         loveadmin_df, wholegame_df = load_data(loveadmin_file, wholegame_file)
-        wholegame_df = prepare_wholegame_data(wholegame_df)
+        wholegame_df = prepare_wholegame_data(wholegame_df, team_prefix)
         loveadmin_df = prepare_loveadmin_data(loveadmin_df)
         
         not_in_wholegame = find_not_in_wholegame(loveadmin_df, wholegame_df)
@@ -224,7 +233,12 @@ def gui_mode():
             logging.warning("No output file selected. Exiting.")
             return
         
-        main(loveadmin_file, wholegame_file, output_file)
+        team_prefix = simpledialog.askstring("Input", "Enter the team prefix to be removed:")
+        if not team_prefix:
+            logging.warning("No team prefix entered. Exiting.")
+            return
+        
+        main(loveadmin_file, wholegame_file, output_file, team_prefix)
     except Exception as e:
         logging.error(f"Error in GUI mode: {e}")
         raise
@@ -233,4 +247,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Cross-reference loveadmin and wholegame data.')
     parser.add_argument('--loveadmin_file', help='Path to the loveadmin.xlsx file')
     parser.add_argument('--wholegame_file', help='Path to the wholegame.xlsx file')
-    parser.add_argument('--output_file
+    parser.add_argument('--output_file', help='Path to the output Excel file')
+    parser.add_argument('--team_prefix', help='Prefix to be removed from team names in wholegame')
+
+    args = parser.parse_args()
+    
+    if args.loveadmin_file and args.wholegame_file and args.output_file and args.team_prefix:
+        logging.info("Running in command-line mode.")
+        main(args.loveadmin_file, args.wholegame_file, args.output_file, args.team_prefix)
+    else:
+        logging.info("Running in GUI mode.")
+        gui_mode()
